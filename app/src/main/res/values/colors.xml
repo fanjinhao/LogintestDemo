@@ -4,9 +4,11 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
-    <color name="mainColor">#ff0000</color>
+    <color name="mainColor">#949393</color>
     <color name="white">#ffffff</color>
     <color name="grey">#ececec</color>
     <color name="txtgrey">#7c7b7b</color>
     <color name="greywhite">#aeacac</color>
+    <color name="colorComment">#0f0f0f</color>
+    <color name="main_comment_name">#00b2ff</color>
 </resources>

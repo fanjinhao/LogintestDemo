@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -33,7 +34,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -126,9 +129,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         JSONObject object = (JSONObject) jsonArray.get(i);
                         String id = object.getString("userid");
                         String content = object.getString("content");
-                        Comment com = new Comment(id, content);
+                        String time = object.getString("time");
+                        Comment com = new Comment(id, content, time);
                         com.setmName(com.getmName() + ":");
                         com.setmContent(com.getmContent());
+                        com.setmTime(com.getmTime());
                         adapterComment.addComment(com);
                     }
                 } catch (Exception e) {
@@ -251,6 +256,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Comment comment = new Comment();
             comment.setmName(user + ":");
             comment.setmContent(comment_content.getText().toString());
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// HH:mm:ss
+//获取当前时间
+            Date date = new Date(System.currentTimeMillis());
+            comment.setmTime(simpleDateFormat.format(date));
             adapterComment.addComment(comment);
             new SendCommentHandle(comment_content.getText().toString()).run();
             comment_content.setText("");

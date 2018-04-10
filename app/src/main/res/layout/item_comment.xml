@@ -1,23 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/grey">
 
-    <TextView
-        android:id="@+id/comment_name"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/mainColor"
-        android:textSize="15sp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="3dp"/>
+        android:orientation="vertical" >
+        <TextView
+            android:id="@+id/comment_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/main_comment_name"
+            android:textSize="15sp"
+            android:layout_marginLeft="15dp" />
+        <TextView
+            android:id="@+id/comment_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/mainColor"
+            android:layout_marginLeft="15dp"
+            android:textSize="10sp"/>
+    </LinearLayout>
 
     <TextView
         android:id="@+id/comment_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorAccent"
+        android:textColor="@color/colorComment"
+        android:layout_marginTop="6dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="3dp"
         android:textSize="15sp" />
 
 </LinearLayout>

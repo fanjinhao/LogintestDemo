@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 
 import cn.fayne.logindemo.R;
@@ -64,7 +66,7 @@ public class AdapterComment extends BaseAdapter{
             view = LayoutInflater.from(mContext).inflate(R.layout.item_comment, null);
             holder.comment_name = view.findViewById(R.id.comment_name);
             holder.comment_content = view.findViewById(R.id.comment_content);
-
+            holder.comment_time = view.findViewById(R.id.comment_time);
             view.setTag(holder);
         } else {
             holder = (ViewHolder) view.getTag();
@@ -72,6 +74,7 @@ public class AdapterComment extends BaseAdapter{
 
         holder.comment_name.setText(mData.get(i).getmName());
         holder.comment_content.setText(mData.get(i).getmContent());
+        holder.comment_time.setText(mData.get(i).getmTime());
         return view;
     }
 
@@ -82,5 +85,6 @@ public class AdapterComment extends BaseAdapter{
     private static class ViewHolder {
         public TextView comment_name;
         public TextView comment_content;
+        public TextView comment_time;
     }
 }

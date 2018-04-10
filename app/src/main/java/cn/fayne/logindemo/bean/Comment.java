@@ -7,14 +7,16 @@ package cn.fayne.logindemo.bean;
 public class Comment {
     String mName;
     String mContent;
+    String mTime;
 
     public Comment() {
 
     }
 
-    public Comment(String mName, String mContent) {
+    public Comment(String mName, String mContent, String time) {
         this.mName = mName;
         this.mContent = mContent;
+        mTime = time;
     }
 
     public String getmName() {
@@ -31,5 +33,13 @@ public class Comment {
 
     public void setmContent(String mContent) {
         this.mContent = mContent;
+    }
+
+    public String getmTime() {
+        return mTime;
+    }
+
+    public void setmTime(String mTime) {
+        this.mTime = mTime;
     }
 }
