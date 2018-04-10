@@ -21,4 +21,7 @@
     <string name="hint_username">Please enter username</string>
     <string name="prompt_password_again">Please enter password again</string>
     <string name="str_logout">Logout</string>
+    <string name="hide_down">隐藏</string>
+    <string name="comment_content">评论内容</string>
+    <string name="send">发送</string>
 </resources>
