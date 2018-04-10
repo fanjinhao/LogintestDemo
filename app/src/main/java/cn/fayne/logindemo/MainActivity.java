@@ -234,6 +234,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // show comment
         rl_enroll.setVisibility(View.GONE);
         rl_comment.setVisibility(View.VISIBLE);
+        comment_content.requestFocus();
     }
 
     private void hideInput() {
