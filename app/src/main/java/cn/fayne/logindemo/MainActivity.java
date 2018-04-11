@@ -1,6 +1,8 @@
 package cn.fayne.logindemo;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -202,8 +204,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         comment_list.setAdapter(adapterComment);
         adapterComment.setOnItemDeleteClickListener(new AdapterComment.OnItemDeleteListener() {
             @Override
-            public void onDeleteClick(int i) {
-                new DeleteCommentHandle(((Comment)(adapterComment.getItem(i))).getId(), i).run();
+            public void onDeleteClick(final int j) {
+                new AlertDialog.Builder(MainActivity.this).setTitle("删除").setMessage("确认删除此条评论？")
+                        .setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                                new DeleteCommentHandle(((Comment)(adapterComment.getItem(j))).getId(), j).run();
+                            }
+                        })
+                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.cancel();
+                            }
+                        }).show();
+
             }
         });
     }

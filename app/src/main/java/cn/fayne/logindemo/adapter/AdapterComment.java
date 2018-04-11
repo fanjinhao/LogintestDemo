@@ -1,5 +1,6 @@
 package cn.fayne.logindemo.adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
