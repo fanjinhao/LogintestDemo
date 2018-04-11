@@ -84,7 +84,7 @@ public class AdapterComment extends BaseAdapter{
         holder.comment_time.setText(mData.get(i).getmTime());
         String name = mData.get(i).getmName();
         String user = getUser();
-        holder.delete_comment.setVisibility(mData.get(i).getmName().toString().equals(getUser()+":") ? View.VISIBLE : View.GONE);
+        holder.delete_comment.setVisibility(getUser().equals("admin") ? View.VISIBLE : mData.get(i).getmName().toString().equals(getUser()+":") ? View.VISIBLE : View.GONE);
 
 
         holder.delete_comment.setOnClickListener(new View.OnClickListener() {
