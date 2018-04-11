@@ -11,4 +11,5 @@
     <color name="greywhite">#aeacac</color>
     <color name="colorComment">#0f0f0f</color>
     <color name="main_comment_name">#00b2ff</color>
+    <color name="red">#FF0000</color>
 </resources>

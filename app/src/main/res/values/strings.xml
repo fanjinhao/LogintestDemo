@@ -24,4 +24,5 @@
     <string name="hide_down">隐藏</string>
     <string name="comment_content">评论内容</string>
     <string name="send">发送</string>
+    <string name="delete_comment">删除</string>
 </resources>

@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -56,14 +57,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private LinearLayout rl_enroll;
     private TextView hide_down;
     private EditText comment_content;
+    private TextView delete_comment;
     private Button comment_send;
     private RelativeLayout rl_comment;
     private AdapterComment adapterComment;
     private List<Comment> data;
-    private String user;
+    public static String user;
     private String url = "http://www.fayne.cn/hello.htm";
     private String connectUrl = "http://project.fayne.cn/getcomment.php";
     private String sendCommentUrl = "http://project.fayne.cn/comment.php";
+    private String deleteCommentUrl = "http://project.fayne.cn/deletecomment.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,10 +130,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     JSONArray jsonArray = new JSONArray(response);
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject object = (JSONObject) jsonArray.get(i);
+                        int commentid = object.getInt("id");
                         String id = object.getString("userid");
                         String content = object.getString("content");
                         String time = object.getString("time");
                         Comment com = new Comment(id, content, time);
+                        com.setId(commentid);
                         com.setmName(com.getmName() + ":");
                         com.setmContent(com.getmContent());
                         com.setmTime(com.getmTime());
@@ -195,6 +200,50 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         data = new ArrayList<>();
         adapterComment = new AdapterComment(getApplicationContext(), data);
         comment_list.setAdapter(adapterComment);
+        adapterComment.setOnItemDeleteClickListener(new AdapterComment.OnItemDeleteListener() {
+            @Override
+            public void onDeleteClick(int i) {
+                new DeleteCommentHandle(((Comment)(adapterComment.getItem(i))).getId(), i).run();
+            }
+        });
+    }
+
+    class DeleteCommentHandle implements Runnable {
+        int id, i;
+        public DeleteCommentHandle(int id, int i) {
+            this.id = id;
+            this.i = i;
+        }
+        @Override
+        public void run() {
+            RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.this);
+
+            Response.Listener<String> listener = new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    Toast.makeText(MainActivity.this, response, Toast.LENGTH_SHORT).show();
+                }
+            };
+
+            Response.ErrorListener errorListener = new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.e(TAG, "onErrorResponse: ", error);
+                }
+            };
+
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, deleteCommentUrl, listener, errorListener) {
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> map = new HashMap<>();
+                    map.put("id", String.valueOf(id));
+                    return map;
+                }
+            };
+
+            requestQueue.add(stringRequest);
+            adapterComment.deleteComment(i);
+        }
     }
 
     @Override
@@ -253,14 +302,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (comment_content.getText().toString().equals("")) {
             Toast.makeText(getApplicationContext(), "评论不能为空", Toast.LENGTH_SHORT).show();
         } else {
-            Comment comment = new Comment();
-            comment.setmName(user + ":");
-            comment.setmContent(comment_content.getText().toString());
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// HH:mm:ss
-//获取当前时间
-            Date date = new Date(System.currentTimeMillis());
-            comment.setmTime(simpleDateFormat.format(date));
-            adapterComment.addComment(comment);
             new SendCommentHandle(comment_content.getText().toString()).run();
             comment_content.setText("");
             Toast.makeText(getApplicationContext(), "评论成功", Toast.LENGTH_SHORT).show();
@@ -274,6 +315,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onResponse(String response) {
                 Toast.makeText(MainActivity.this, response, Toast.LENGTH_SHORT).show();
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    int id = jsonObject.getInt("id");
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         };
 
@@ -299,6 +347,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Log.d(TAG, "sendServerComment: "+ content + ", " + url);
 
         requestQueue.add(stringRequest);
+        adapterComment.clearAllComment();
+        loadComment();
     }
 
     private void submit() {

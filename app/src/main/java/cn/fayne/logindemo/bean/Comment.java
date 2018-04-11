@@ -5,6 +5,8 @@ package cn.fayne.logindemo.bean;
  */
 
 public class Comment {
+
+    int id;
     String mName;
     String mContent;
     String mTime;
@@ -17,6 +19,14 @@ public class Comment {
         this.mName = mName;
         this.mContent = mContent;
         mTime = time;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getmName() {

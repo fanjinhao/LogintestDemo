@@ -1,16 +1,18 @@
 package cn.fayne.logindemo.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
+
 
 import java.util.List;
 
+import cn.fayne.logindemo.MainActivity;
 import cn.fayne.logindemo.R;
 import cn.fayne.logindemo.bean.Comment;
 
@@ -22,6 +24,8 @@ public class AdapterComment extends BaseAdapter{
 
     Context mContext;
     List<Comment> mData;
+    private static final String TAG = "AdapterComment";
+    private OnItemDeleteListener onItemDeleteListener;
     public AdapterComment(Context context, List<Comment> data) {
         mContext = context;
         mData = data;
@@ -48,6 +52,8 @@ public class AdapterComment extends BaseAdapter{
         return mData.size();
     }
 
+
+
     @Override
     public Object getItem(int i) {
         return mData.get(i);
@@ -59,7 +65,7 @@ public class AdapterComment extends BaseAdapter{
     }
 
     @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
+    public View getView(final int i, View view, ViewGroup viewGroup) {
         ViewHolder holder;
         if (view == null) {
             holder = new ViewHolder();
@@ -67,6 +73,7 @@ public class AdapterComment extends BaseAdapter{
             holder.comment_name = view.findViewById(R.id.comment_name);
             holder.comment_content = view.findViewById(R.id.comment_content);
             holder.comment_time = view.findViewById(R.id.comment_time);
+            holder.delete_comment = view.findViewById(R.id.delete_comment);
             view.setTag(holder);
         } else {
             holder = (ViewHolder) view.getTag();
@@ -75,6 +82,17 @@ public class AdapterComment extends BaseAdapter{
         holder.comment_name.setText(mData.get(i).getmName());
         holder.comment_content.setText(mData.get(i).getmContent());
         holder.comment_time.setText(mData.get(i).getmTime());
+        String name = mData.get(i).getmName();
+        String user = getUser();
+        holder.delete_comment.setVisibility(mData.get(i).getmName().toString().equals(getUser()+":") ? View.VISIBLE : View.GONE);
+
+
+        holder.delete_comment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onItemDeleteListener.onDeleteClick(i);
+            }
+        });
         return view;
     }
 
@@ -82,9 +100,36 @@ public class AdapterComment extends BaseAdapter{
         mData.add(comment);
         notifyDataSetChanged();
     }
+
+    public void hideDelete(int i) {
+
+    }
+
+    public void deleteComment(int i) {
+        mData.remove(i);
+        notifyDataSetChanged();
+    }
+
+    public void clearAllComment() {
+        mData.clear();
+    }
+
+    public String getUser() {
+        return MainActivity.user;
+    }
+
+    public interface OnItemDeleteListener {
+        void onDeleteClick(int i);
+    }
+
+    public void setOnItemDeleteClickListener(OnItemDeleteListener onItemDeleteClickListener) {
+        this.onItemDeleteListener = onItemDeleteClickListener;
+    }
+
     private static class ViewHolder {
         public TextView comment_name;
         public TextView comment_content;
         public TextView comment_time;
+        public TextView delete_comment;
     }
 }
