@@ -334,7 +334,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     int id = jsonObject.getInt("id");
-
+                    adapterComment.clearAllComment();
+                    loadComment();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -361,10 +362,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         };
         Log.d(TAG, "sendServerComment: "+ content + ", " + url);
-
         requestQueue.add(stringRequest);
-        adapterComment.clearAllComment();
-        loadComment();
     }
 
     private void submit() {
